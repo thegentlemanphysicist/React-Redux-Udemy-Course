@@ -1,22 +1,31 @@
 import React, { Component } from 'react';
+import Radium from 'radium';
 import './App.css';
 import Person from './Person/Person';
 import UserInput from './UserInput/UserInput';
 import UserOutput from './UserOutput/UserOutput';
+import Ass2Obj from './Assignment2Obj/Assignment2Obj'
+import ValidationComponent from './ValidationComponent/ValidationComponent'
+import CharComponent from './CharComponent/CharComponent'
+import charComponent from './CharComponent/CharComponent';
 
 class App extends Component {
   state = {
     persons: [
-      {name: 'Max', age: 28},
-      {name: 'Manu', age: 29},
-      {name: 'Stephanie', age: 26}
+      {id: '1', name: 'Max', age: 28},
+      {id: '2', name: 'Manu', age: 29},
+      {id: '3', name: 'Stephanie', age: 26}
     ],
     usernames: [
       {userName: "Chad"},
       {userName: "Stacy"},
       {userName: "Chad2"}
     ],
-    showPersons: false
+    showPersons: false,
+
+    ass2content: '',
+    charatersDisplayed: 0,
+    arrayOfContent: []
   }
   
   // switchNameHandler = (newName) =>{
@@ -30,11 +39,25 @@ class App extends Component {
   // }
 
   nameChangedHandler = (event, id) => {
-    this.setState({persons: [
-      {id: 'asdfa', name: 'Max', age: 28},
-      {id: 'asfdasdfa',name: event.target.value, age: 29},
-      {id: 'adsasdfa',name: 'Stephanie', age: 26}
-    ]})
+    const personIndex = this.state.persons.findIndex(p => {
+      return p.id === id
+    });
+    // Don't mutate the object directly
+    // const person = this.state.persons[personIndex];
+    const person = {
+      ...this.state.persons[personIndex]
+    };
+
+    person.name = event.target.value;
+
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+    this.setState({persons: persons});
+    // this.setState({persons: [
+    //   {id: 'asdfa', name: 'Max', age: 28},
+    //   {id: 'asfdasdfa',name: event.target.value, age: 29},
+    //   {id: 'adsasdfa',name: 'Stephanie', age: 26}
+    // ]});
   }
 
   userNameHandler = (event) => {
@@ -61,15 +84,40 @@ class App extends Component {
     this.setState({showPersons: !doesShow});
   }
 
+  countCharacters = (event) => {
+    const contentEntered = event.target.value;
+    const arrayOContent = contentEntered.split('');
+    this.setState({
+      charatersDisplayed: arrayOContent.length,
+      ass2content: contentEntered,
+      arrayOfContent: arrayOContent
+    });
+  }
+
+  deletedCharacterHandler = (charIndex) => {
+    const contentArray = [...this.state.arrayOfContent]
+    contentArray.splice(charIndex,1);
+    this.setState({
+      charatersDisplayed: contentArray.length,
+      arrayOfContent: contentArray,
+      ass2content: contentArray.join('')
+    })
+  }
+
   render() {
     const style = {
-      backgroundColor: 'white',
+      backgroundColor: 'green',
+      color: 'white',
       font: 'inherit',
       border: '1px solid blue',
       padding: '8px',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      ':hover': {
+        backgroundColor: 'lightgreen',
+        color: 'black'
+      }
     };
-
+    // pseudo selectors must be wrapped
     let persons = null;
 
     if (this.state.showPersons){
@@ -97,29 +145,66 @@ class App extends Component {
           age={this.state.persons[2].age} /> */}
       </div> 
       );
+      style.backgroundColor = 'red'
+      style[':hover'] = {
+        backgroundColor: 'salmon',
+        color: 'black'
+      }
+
+    }
+
+    let charComponents = null;
+    //if (this.state.charatersDisplayed>0){
+      charComponents = (
+        <div>
+          {this.state.arrayOfContent.map((arrayelement, index) =>{
+            return <CharComponent
+            click = {() => this.deletedCharacterHandler(index)}
+            char = {arrayelement}
+            />
+          })}
+        </div>
+      );
+
+    //}
+    const classes = [];
+    if (this.state.persons.length <= 2){
+      classes.push('red');
+    }
+    if (this.state.persons.length <= 1){
+      classes.push('bold');
     }
 
     return (
       <div className="App">
         <h1>Hi I'm a react app</h1>
+        <p className={classes.join(' ')}> This is really working!</p>
         <button 
           style = {style}
           onClick={this.togglePersonHandler}>Toggle Persons</button>
           {persons}
 
-        {/*         
-        <UserInput 
+        {/* Assignment 1      */}
+        {/* <UserInput 
           changed ={this.userNameHandler}
           name = {this.state.usernames[2].userName} >
         </UserInput>
         <UserOutput userName = {this.state.usernames[0].userName} />
         <UserOutput userName = {this.state.usernames[1].userName} />
-        <UserOutput userName = {this.state.usernames[2].userName} /> 
-        */}
+        <UserOutput userName = {this.state.usernames[2].userName} />  */}
+
+        {/* Assignment 2 */}
+        {/* <Ass2Obj
+          changed = {(event) => this.countCharacters(event)}
+          content = {this.state.ass2content}
+          length = {(this.state.charatersDisplayed)}
+          />
+        <ValidationComponent textLength = {this.state.charatersDisplayed} />
+        {charComponents} */}
       </div>
     );
     // return React.createElement('div',{className: 'App'}, React.createElement('h1', null,'I am a react app'));
   }
 }
 
-export default App;
+export default Radium(App);

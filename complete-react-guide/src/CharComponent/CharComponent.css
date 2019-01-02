@@ -1,0 +1,7 @@
+.CharComponent {
+  color: blue;
+  padding: 16px;
+  textAlign: center;
+  margin: 16px;
+  border: 1px solid black;
+}
