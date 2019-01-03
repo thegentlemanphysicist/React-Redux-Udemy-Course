@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Radium, {StyleRoot} from 'radium';
 import './App.css';
 import Person from './Person/Person';
 import UserInput from './UserInput/UserInput';
@@ -111,11 +110,7 @@ class App extends Component {
       font: 'inherit',
       border: '1px solid blue',
       padding: '8px',
-      cursor: 'pointer',
-      ':hover': {
-        backgroundColor: 'lightgreen',
-        color: 'black'
-      }
+      cursor: 'pointer'
     };
     // pseudo selectors must be wrapped
     let persons = null;
@@ -145,11 +140,8 @@ class App extends Component {
           age={this.state.persons[2].age} /> */}
       </div> 
       );
-      style.backgroundColor = 'red'
-      style[':hover'] = {
-        backgroundColor: 'salmon',
-        color: 'black'
-      }
+      style.backgroundColor = 'red';
+
 
     }
 
@@ -176,7 +168,6 @@ class App extends Component {
     }
 
     return (
-      <StyleRoot>
       <div className="App">
         <h1>Hi I'm a react app</h1>
         <p className={classes.join(' ')}> This is really working!</p>
@@ -203,10 +194,9 @@ class App extends Component {
         <ValidationComponent textLength = {this.state.charatersDisplayed} />
         {charComponents} */}
       </div>
-      </StyleRoot>
     );
     // return React.createElement('div',{className: 'App'}, React.createElement('h1', null,'I am a react app'));
   }
 }
 
-export default Radium(App);
+export default App;
