@@ -10,6 +10,16 @@ import Cockpit from '../components/Cockpit/Cockpit';
 // import charComponent from '../CharComponent/CharComponent';
 // import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 class App extends Component {
+  constructor(props) {
+    super(props);
+    console.log('[App.js] Inside Constructor', props);
+  }
+  componentWillMount() {
+    console.log('[App.js] Inside Conmponent will mount');
+  }
+  componentDidMount() {
+    console.log('[App.js] Inside Conmponent did mount');
+  }
   state = {
     persons: [
       {id: '1', name: 'Max', age: 28},
@@ -86,6 +96,7 @@ class App extends Component {
   // }
 
   render() {
+    console.log('[App.js] Inside Render');
     // pseudo selectors must be wrapped
     let persons = null;
     if (this.state.showPersons){
