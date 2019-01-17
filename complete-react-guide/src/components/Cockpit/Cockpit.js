@@ -23,11 +23,12 @@ const cockpit = props => {
       <button className={btnClasss} onClick={props.clicked}>
         Toggle Persons
       </button>
+      <button onClick={props.login}>Log In</button>
     </>
   );
 };
 
-export default cockpit;
+export default React.memo(cockpit);
 
 // {/* Assignment 1      */}
 // {/* <UserInput
