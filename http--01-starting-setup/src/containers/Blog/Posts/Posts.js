@@ -34,6 +34,7 @@ class Posts extends Component {
       });
   }
 
+  
   render() {
     let posts = <p>Something went wrong!!!!!!</p>;
     if (!this.state.error) {
